@@ -7,43 +7,56 @@ public class PlayerController : MonoBehaviour {
 	private bool isHorizontalInUse;
 	private bool isVerticalInUse;
 	private bool isRotationInUse;
+	private GameController gc;
+	
 	
 	delegate Vector3 moveDirDelegate();
 
-	public int distance = 1;
-	public float diagonalDistance = 1.41421356237f;
+	public int distance = Constants.gridSize;
+	public float diagonalDistance = Constants.sqrt;
 	public int rotationAmount = 45;
 	
 
 
 	void Start () {
+		gc = FindObjectOfType<GameController>();
+		if(gc == null){
+			Debug.LogError("GameController not found");
+		}
 	}
 	
 
 	void Update () {
+		// if it is the player's turn and a key is pressed
+		// do corresponding action and end turn
+		gc.BeginPlayerTurn();
 		if(Input.GetButtonDown("Sprint")){
-			distance = (distance==1 ? 2 : 1);
-			diagonalDistance = (distance<2f ? 2.82842712475f : 1.41421356237f);
+			ToggleSprint();
+		}
+			
+		if(GameController.ReturnPlayerTurn() && CheckAxisUsage("Vertical",ref isVerticalInUse) == false){
+			Move(GetVerticalMovement);
+			gc.EndPlayerTurn();
+		}
+
+		if(GameController.ReturnPlayerTurn() && CheckAxisUsage("Horizontal", ref isHorizontalInUse) == false){
+			Move(GetHorizontalMovement);
+			gc.EndPlayerTurn();
 		}
 		
-		if(CheckAxisUsage("Vertical",ref isVerticalInUse) == false){
-			Move(GetVerticalMovement);
-		}
-
-		if(CheckAxisUsage("Horizontal", ref isHorizontalInUse) == false){
-			Move(GetHorizontalMovement);
-		}
-
-		if(CheckAxisUsage("Rotation", ref isRotationInUse) == false){
-			Debug.Log(rotationAmount * Input.GetAxisRaw("Rotation") * transform.up);
+		if(GameController.ReturnPlayerTurn() && CheckAxisUsage("Rotation", ref isRotationInUse) == false){
 			transform.Rotate(rotationAmount * Input.GetAxisRaw("Rotation") * transform.up);
 		}
-		
 	}
 
+	public void ToggleSprint () {
+		if(GameController.ReturnPlayerTurn()){
+			distance = (distance==Constants.gridSize ? Constants.gridSize*2 : Constants.gridSize);
+			diagonalDistance = (distance == Constants.sqrt ? Constants.sqrt*2 : Constants.sqrt);
+		}
+	}
 
-
-	bool CheckAxisUsage (string axisString, ref bool isAxisInUse) {
+	private bool CheckAxisUsage (string axisString, ref bool isAxisInUse) {		//returns false is axis is in use
 		if(isAxisInUse == false && Input.GetAxisRaw(axisString) != 0){
 			isAxisInUse = true;
 			return false;
@@ -57,14 +70,16 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//MOVEMENT
-	void Move (moveDirDelegate movementDirection) {
+	private void Move (moveDirDelegate movementDirection) {
 			Debug.DrawRay(transform.position, distance * movementDirection(), Color.magenta, 10f);
+			//Debug.Log(transform.position);
+			//Debug.Log("local" + transform.localPosition);
 			if((int)transform.rotation.eulerAngles.y % 10 == 0){
 				if(Physics.Raycast(transform.position, distance * movementDirection(), distance) == false){
 					transform.Translate(distance * movementDirection(), Space.World);
 				}
 			}
-			else{
+			else {
 				if(Physics.Raycast(transform.position, diagonalDistance * movementDirection(), distance) == false){
 					transform.Translate(diagonalDistance * movementDirection(), Space.World);
 				}
@@ -73,14 +88,14 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	Vector3 GetVerticalMovement () {
+	private Vector3 GetVerticalMovement () {
 		//Debug.Log(Input.GetAxisRaw("Vertical"));
 		if(Input.GetAxisRaw("Vertical") == 1){
 			return transform.forward;
 		}
 		else return -transform.forward;
 	}
-	Vector3 GetHorizontalMovement () {
+	private Vector3 GetHorizontalMovement () {
 		//Debug.Log(Input.GetAxisRaw("Horizontal"));
 		if(Input.GetAxisRaw("Horizontal") == 1){
 			return transform.right;

@@ -41,8 +41,8 @@ GameObject:
   - component: {fileID: 65979599402304468}
   - component: {fileID: 23335806859152386}
   - component: {fileID: 114407340935978026}
-  - component: {fileID: 114456769864841760}
-  m_Layer: 0
+  - component: {fileID: 114484573621891338}
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -187,8 +187,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd5de9492d5709f45ae2b022219dc7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolPathWorld: 
   patrolPath: 
---- !u!114 &114456769864841760
+--- !u!114 &114484573621891338
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -199,6 +200,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc0d6d290d5f0a4195552abf3eed051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPathWorld: 
   patrolLine: {fileID: 120832979855207000, guid: 36036babae99aec4f927e042ae051a2e,
     type: 2}

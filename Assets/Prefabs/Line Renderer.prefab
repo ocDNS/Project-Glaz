@@ -72,13 +72,12 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Positions:
+  - {x: 1, y: 0.025, z: 0}
+  - {x: 1, y: 0.025, z: 1}
   - {x: 2, y: 0.025, z: 1}
   - {x: 2, y: 0.025, z: 2}
-  - {x: 2, y: 0.025, z: 3}
-  - {x: 3, y: 0.025, z: 3}
-  - {x: 4, y: 0.025, z: 3}
+  - {x: 3, y: 0.025, z: 2}
   - {x: 4, y: 0.025, z: 2}
-  - {x: 4, y: 0.025, z: 3}
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 0.025

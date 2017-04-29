@@ -75,7 +75,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1925246818974618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -0}
+  m_LocalPosition: {x: 5, y: 0.5, z: -0}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_Children:
   - {fileID: 4918586869031396}
@@ -286,6 +286,8 @@ MonoBehaviour:
   distance: 1
   diagonalDistance: 1.4142135
   rotationAmount: 45
+  killGrid: {fileID: 1559313921111358, guid: d9a6dcdf7f48fe644973c8d36494a0fe, type: 2}
+  stunGrid: {fileID: 1097011946661348, guid: 1ace7b979c9f03e46b2de73276d64483, type: 2}
 --- !u!124 &124237959941656864
 Behaviour:
   m_ObjectHideFlags: 1

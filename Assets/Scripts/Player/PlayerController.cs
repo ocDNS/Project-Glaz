@@ -45,7 +45,8 @@ namespace Player {
 
 			//movement
 			if(Input.GetButtonDown("Sprint")){
-				ToggleSprint(!sprintToggle.isOn);
+				//apparently, upon changing the value of isOn, OnValueChanged is triggered too
+				sprintToggle.isOn = !sprintToggle.isOn;
 			}
 				
 			if(GameController.ReturnPlayerTurn() && CheckAxisUsage("Vertical", ref isVerticalInUse) == false){
@@ -81,7 +82,6 @@ namespace Player {
 		}
 
 		public void ToggleStunGrid (bool val) {
-			Debug.Log(val);
 			if(gh == null){
 				gh = gameObject.AddComponent<PlayerGridsHandler>() as PlayerGridsHandler;
 			}
@@ -95,16 +95,13 @@ namespace Player {
 		}
 
 		public void ToggleSprint (bool val) {
-			if(sprintToggle.isOn != val){
-				sprintToggle.isOn = val;
-			}
 			if(GameController.ReturnPlayerTurn()){
-				distance = (distance==Constants.gridSize ? Constants.gridSize*2 : Constants.gridSize);
+				distance = (distance == Constants.gridSize ? Constants.gridSize*2 : Constants.gridSize);
 				diagonalDistance = (distance == Constants.sqrt ? Constants.sqrt*2 : Constants.sqrt);
 			}
 		}
 
-		private bool CheckAxisUsage (string axisString, ref bool isAxisInUse) {	//returns false is axis is in use
+		private bool CheckAxisUsage (string axisString, ref bool isAxisInUse) {	//returns false if axis is in use
 			if(isAxisInUse == false && Input.GetAxisRaw(axisString) != 0){
 				isAxisInUse = true;
 				return false;
@@ -118,6 +115,7 @@ namespace Player {
 		}
 
 		//MOVEMENT
+		
 		private void Move (moveDirDelegate movementDirection) {
 				Debug.DrawRay(transform.position, distance * movementDirection(), Color.magenta, 10f);
 				if(Mathf.Approximately( Mathf.RoundToInt( transform.rotation.eulerAngles.y ) % 10, 0)){ //not working properly
@@ -150,14 +148,12 @@ namespace Player {
 		}*/
 
 		private Vector3 GetVerticalMovement () {
-			//Debug.Log(Input.GetAxisRaw("Vertical"));
 			if(Input.GetAxisRaw("Vertical") == 1){
 				return transform.forward;
 			}
 			else return -transform.forward;
 		}
 		private Vector3 GetHorizontalMovement () {
-			//Debug.Log(Input.GetAxisRaw("Horizontal"));
 			if(Input.GetAxisRaw("Horizontal") == 1){
 				return transform.right;
 			}
@@ -167,14 +163,12 @@ namespace Player {
 		//COMBAT
 
 		void Kill (GameObject obj) {
-			//Debug.Log("Kill");
 			GameController.RemoveEnemy(obj);
 			gc.EndPlayerTurn();
 		}
 
 		void Stun (GameObject obj) {
-			//Debug.Log("Stun");
-			obj.GetComponent<EnemyController>().isFrozen = true;
+			StartCoroutine(obj.GetComponent<EnemyController>().FreezeForTurns(4));
 			gc.EndPlayerTurn();
 		}
 

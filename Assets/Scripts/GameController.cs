@@ -23,8 +23,6 @@ public class GameController : MonoBehaviour {
 			turnsCountText.text = turnsCount.ToString();
 	}
 
-	
-
 	public void EndPlayerTurn () {
 		playerTurn = false;
 		turnsCount++;
@@ -53,6 +51,22 @@ public class GameController : MonoBehaviour {
 				}
 			}
 	}
+
+	/*public static void ToggleEnemiesFieldOfView (bool turnOn = false) {
+		foreach(GameObject enemy in enemies){
+				if(enemy != null){
+					EnemyFieldOfViewController _efvc = enemy.GetComponent<EnemyFieldOfViewController>() as EnemyFieldOfViewController;
+					if(_efvc != null) {
+						if(turnOn){
+							_efvc.StartCoroutine(_efvc.StartCheckForPlayer(_efvc.checkFrequency));
+						}
+						else{
+							_efvc.StopCoroutine("StartCheckForPlayer");
+						}
+					}
+				}
+			}
+	}*/
 
 	public static void RemoveEnemy (GameObject enemy) {
 		//update enemy list
